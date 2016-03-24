@@ -1,15 +1,17 @@
-package com.dasugames.soulbeatbombscramble;
+package com.dasugames.soulbeatbombscramble.objects;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.dasugames.soulbeatbombscramble.ScreenWorld;
 
+/**
+ * This class represent an invisible enemy bomb.
+ * @author darren.sue
+ *
+ */
 public class Enemy {
 
 	private Vector2 position;
-	//private ImageObjectSimple debugImage;
 	
 	private final float maxHealth = 0.5f;
 	private float currentHealth = maxHealth;
@@ -28,13 +30,10 @@ public class Enemy {
 	
 	public Enemy(Vector2 position, ScreenWorld screenWorld){
 		this.position = position;
-		//debugImage = new ImageObjectSimple(screenWorld, "data/Siegfried-ffvi-ios-battle.png",new Vector2(0,0),1f,0,new Vector2(.007f,.007f));
 	}
 	
 	public void render() {
-		//Gdx.app.log("enemy","debugrender");
-		//debugImage.setPositionVec(position);
-		//debugImage.render();
+		// Invisible enemies due to the nature of this game.
 	}
 	
 	

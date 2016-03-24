@@ -9,18 +9,29 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * This is an asset manager which caches resources referenced by string into a map.
+ * Otherwise, it is pulled anew.
+ * @author darren.sue
+ *
+ */
 public class Assets {
+	
+	// TODO I may want to consider using soft references to counter memory leaks here
 	private static Map<String, Texture> loadedTextures = new HashMap<String,Texture>();
 	private static Map<TextureRegionKey,TextureRegion> loadedTextureRegions = new HashMap<TextureRegionKey,TextureRegion>();
+	
 	private static void clearTextures(){
 		for (Texture oldTexture: loadedTextures.values()){
 			oldTexture.dispose();
 		}
 		loadedTextures = new HashMap<String,Texture>();
 	}
-	private static void clearTextureRegions(){
+	
+	private static void clearTextureRegions() {
 		loadedTextureRegions = new HashMap<TextureRegionKey,TextureRegion>();
 	}
+	
 	public static void clearAssets(){
 		clearTextureRegions();
 		clearTextures();
@@ -40,9 +51,7 @@ public class Assets {
 	public static TextureRegion loadTextureRegion(String textureName){
 		Texture texture = loadTexture(textureName);
 		Vector2 lowerLeft = new Vector2(0,0);
-		// TODO I dont know whether this should be just width or height
-		// or whether I legitimately need to decrease this by one
-		// but probably doesn't matter at this point
+
 		long height = texture.getHeight();
 		long width = texture.getWidth();
 		Vector2 upperRight = new Vector2(width,height);

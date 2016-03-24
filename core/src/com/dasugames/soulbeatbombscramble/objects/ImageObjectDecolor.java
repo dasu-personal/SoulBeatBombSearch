@@ -1,8 +1,9 @@
-package com.dasugames.soulbeatbombscramble;
+package com.dasugames.soulbeatbombscramble.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.dasugames.soulbeatbombscramble.DasuScreen;
 
 public class ImageObjectDecolor extends ImageObjectSimple {
 
@@ -11,7 +12,6 @@ public class ImageObjectDecolor extends ImageObjectSimple {
 			Vector2 nResizeVec) {
 		super(screenWorld, asset, nPositionVec, nParallaxScale, nRotationScale,
 				nResizeVec);
-		//sprite.setColor(1, 1, 1, 1f); colors can be drained. This is the default.
 		sprite.setColor(new Color(1f,1f,1f,1f));
 	}
 	

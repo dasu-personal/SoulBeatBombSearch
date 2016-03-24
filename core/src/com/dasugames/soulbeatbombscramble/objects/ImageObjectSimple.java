@@ -1,28 +1,31 @@
-package com.dasugames.soulbeatbombscramble;
+package com.dasugames.soulbeatbombscramble.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.dasugames.soulbeatbombscramble.Assets;
+import com.dasugames.soulbeatbombscramble.DasuScreen;
+import com.dasugames.soulbeatbombscramble.WorldCamera;
 
-// Just the position of the imageObject, and a render convenience method that can be overwtitten
+/**
+ * This is a slightly more complex image object with rendering functionality 
+ * @author darren.sue
+ *
+ */
 public class ImageObjectSimple  {
 	
 	// These help determine where the image should be placed on the screen
 	protected Vector2 positionVec;
-	//protected float rotationScale = 0; // This will be in degrees
 	protected float parallaxScale;;
 	
 	// These can help maintain a sense of continuity of motion
-	private float rotVelScale = 0;
-	private Vector2 velocityVec = new Vector2(0,0);
-	private Vector2 resizeVelVec = new Vector2(0,0);
+	// For the purposes of this project, these won't be used
+	protected float rotVelScale = 0;
+	protected Vector2 velocityVec = new Vector2(0,0);
+	protected Vector2 resizeVelVec = new Vector2(0,0);
 	
 	// This is the resource that will be displayed
 	private TextureRegion simpleImageResource;
@@ -57,8 +60,6 @@ public class ImageObjectSimple  {
 	public void render(){
 
 
-		
-		//Gdx.app.log("test", "render");
 		// Remember everything in my engine is relation to a center zero
 		float originX = positionVec.x;
 		float originY = positionVec.y;
@@ -72,10 +73,7 @@ public class ImageObjectSimple  {
 		originX *= parallaxScale;
 		originY *= parallaxScale;
 
-
-		
 		sprite.setCenter(originX, originY);
-		//sprite.setOrigin(0, 0);
 		sprite.draw(batcher);
 		
 		
@@ -84,13 +82,11 @@ public class ImageObjectSimple  {
 
 	public float getRotVelScale() {
 		return sprite.getRotation();
-		//return rotVelScale;
 	}
 
 	public void setRotVelScale(float rotVelScale) {
-		//this.rotVelScale = rotVelScale;  // remove this
+		this.rotVelScale = rotVelScale; 
 		sprite.setRotation(rotVelScale);
-		//sprite.getRotat
 		
 	}
 	
@@ -100,21 +96,13 @@ public class ImageObjectSimple  {
 	public void setPositionVec(Vector2 positionVec) {
 		this.positionVec = positionVec;
 	}
-	/* decided about making a simpler image object as the actual objects are going to be very 
-	public Vector2 getVelocityVec() {
-		return velocityVec;
-	}
-	public void setVelocityVec(Vector2 velocityVec) {
-		this.velocityVec = velocityVec;
-	}
-	*/
+
 	public Vector2 getResizeVec() {
 		return new Vector2(sprite.getScaleX(),sprite.getScaleY());
 	}
 
-	// resize vectors can be negative
 	public void setResizeVec(Vector2 resizeVec) {
-		//this.resizeVec = resizeVec;
+		// note that resize vectors can be negative to flip the image
 		sprite.setScale(resizeVec.x, resizeVec.y);
 	}
 	public void setResizeScale(float resizeScale) {
@@ -137,6 +125,30 @@ public class ImageObjectSimple  {
 	}
 	public Vector2 getCurrentSize(){
 		return new Vector2(sprite.getScaleX()*sprite.getWidth(), sprite.getScaleX()*sprite.getHeight());
+	}
+
+
+
+	public Vector2 getVelocityVec() {
+		return velocityVec;
+	}
+
+
+
+	public void setVelocityVec(Vector2 velocityVec) {
+		this.velocityVec = velocityVec;
+	}
+
+
+
+	public Vector2 getResizeVelVec() {
+		return resizeVelVec;
+	}
+
+
+
+	public void setResizeVelVec(Vector2 resizeVelVec) {
+		this.resizeVelVec = resizeVelVec;
 	}
 	
 }

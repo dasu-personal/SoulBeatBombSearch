@@ -1,13 +1,18 @@
-package com.dasugames.soulbeatbombscramble;
+package com.dasugames.soulbeatbombscramble.objects;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * A very simple representation of an image.
+ * Consider getting rid of this as I think that ImageObjectSimple
+ * is preferable moving forwards.
+ * @author darren.sue
+ *
+ */
 public class  ImageObject {
 	protected Vector2 positionVec = new Vector2(0,0);
-	//private Vector2 velocityVec = new Vector2(0,0);
 	protected Vector2 resizeVec = new Vector2(1,1);
-	protected float rotationScale = 0; // This will be in degrees
-	//private float rotVelScale = 0;
+	protected float rotationScale = 0; // in velocity
 	protected float parallaxScale = 1;
 	
 	public Vector2 getPositionVec() {
@@ -16,14 +21,7 @@ public class  ImageObject {
 	public void setPositionVec(Vector2 positionVec) {
 		this.positionVec = positionVec;
 	}
-	/* decided about making a simpler image object as the actual objects are going to be very 
-	public Vector2 getVelocityVec() {
-		return velocityVec;
-	}
-	public void setVelocityVec(Vector2 velocityVec) {
-		this.velocityVec = velocityVec;
-	}
-	*/
+
 	public Vector2 getResizeVec() {
 		return resizeVec;
 	}
@@ -41,14 +39,7 @@ public class  ImageObject {
 	public void setRotationScale(float rotationScale) {
 		this.rotationScale = rotationScale;
 	}
-	/*
-	public float getRotVelScale() {
-		return rotVelScale;
-	}
-	public void setRotVelScale(float rotVelScale) {
-		this.rotVelScale = rotVelScale;
-	}
-	*/
+
 	public float getParallaxScale() {
 		return parallaxScale;
 	}
