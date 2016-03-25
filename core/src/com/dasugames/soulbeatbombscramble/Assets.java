@@ -101,22 +101,4 @@ public class Assets {
 	    }
 	    
 	}
-	
-	// these following two do not really obey the model that I am using here,
-	// as this class is only designed to coordinate assets between many objects
-	/*
-	public void putTextures(String nTextureName){
-		if (loadedTextures.containsKey(nTextureName)) return;
-		Texture texture = new Texture(Gdx.files.internal("data/texture.png"));
-        texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-	}
-	public Texture getTextures(String textureName){
-		if (loadedTextures.containsKey(textureName)){
-			return loadedTextures.get(textureName);
-		} else {
-			return null;
-		}
-			
-	}
-	*/
 }

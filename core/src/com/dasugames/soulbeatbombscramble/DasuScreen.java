@@ -4,7 +4,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class DasuScreen implements Screen {
+/**
+ * This abstract class is mostly to implement screen functionally with stubs as I am unlikely
+ * to need anything custom there.
+ * @author darren.sue
+ *
+ */
+public abstract class DasuScreen implements Screen {
 	protected SpriteBatch batcher;
 	protected WorldCamera worldCamera;
 	protected ShapeRenderer shapeRenderer;
@@ -29,16 +35,8 @@ public class DasuScreen implements Screen {
 	}
 	
 
-
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void render(float delta) {
 		// TODO Auto-generated method stub
 		
 	}

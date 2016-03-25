@@ -2,18 +2,14 @@ package com.dasugames.soulbeatbombscramble;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -21,25 +17,32 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.dasugames.soulbeatbombscramble.Assets;
 import com.dasugames.soulbeatbombscramble.objects.Enemy;
 import com.dasugames.soulbeatbombscramble.objects.ImageObjectDecolor;
 import com.dasugames.soulbeatbombscramble.objects.PlayerCharacter;
 
 
-
+/**
+ * This contains the general play screen.
+ * @author darren.sue
+ *
+ */
 public class ScreenWorld extends DasuScreen {
 
 	private int levelScore = 0;
-
-
+	private float visibleWidth;
+	private float visibleHeight;
 	private Sound clickSound; 
 	private Sound bombSound;
-	PlayerCharacter playerCharacter;
+	private PlayerCharacter playerCharacter;
 	private List<Enemy> enemies;
 	private ImageObjectDecolor currentBackgroundElement;
-	Preferences prefs;
 	private I18NBundle textResourceBundle;	
+	
+	// Used to coordinate the lose animation
+	private float loseTimer = 0;
+	private boolean isRumble = false;
+	
 	public enum GameState{
 		PLAY, LOSE, WIN
 	}
@@ -184,28 +187,27 @@ public class ScreenWorld extends DasuScreen {
 
 	float testVibrate = 0;
 	boolean isVibrate = false;
+	
 	@Override
 	public void render(float runTime) {
 		if (!active) return;
 		game.update(runTime);
+		
 		// Fill the entire screen with black, to prevent potential flickering.
         Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		if (gameState == GameState.PLAY) {
 			updatePlay(runTime);
-			render();
 		} else if (gameState == GameState.LOSE) {
 			updateLose(runTime);
-			render(); // actually, I think I can get away with this as well
 		} else {
 			updateWin(runTime);
-			render(); // I think that I can get away with this still
 		}
+		render();
 
 	 }
 	
-	//private float winTimer = 0;
 	private void updateWin(float runTime){
 		// All I have to do here is pause and then generate an entirely new screenworld
 		//winTimer += runTime;
@@ -227,16 +229,9 @@ public class ScreenWorld extends DasuScreen {
 
 	private boolean active = false;
 	public void afterLoadStart() {
-		// TODO Auto-generated method stub
 		active = true;
 	}
 
-
-
-
-
-	private float loseTimer = 0;
-	private boolean isRumble = false;
 	private void updateLose(float runTime) {
 		
 		playerCharacter.update(runTime);
@@ -287,24 +282,15 @@ public class ScreenWorld extends DasuScreen {
 		shapeRenderer.end();
 	}
 
-	@Override
-	public void show() {
 
-		//loadAssetsObjects();
-	}
 
 	
 	private void obeyDimensions(){
 
 		float aspect = Math.abs((float)Gdx.graphics.getWidth()/ (float)Gdx.graphics.getHeight());
-		//float aspect = Math.abs(width/ height);
-		//Gdx.app.log("resize", "width = " + width+"; height = " + height + "; gdxwidth = " + Gdx.graphics.getWidth() + "; gdxheight = " + Gdx.graphics.getHeight());
-	
+			
 		visibleWidth = 5;
 		visibleHeight = 5f/aspect;
-
-
-		//worldCamera = new WorldCamera();
 		
 		// set worldCamera stuff
 		worldCamera.setMinDimensionVec(new Vector2(5f,5f/aspect));
@@ -319,31 +305,6 @@ public class ScreenWorld extends DasuScreen {
 		currentBackgroundElement.setResizeScale(Math.max(resizeWidth,resizeHeight));
 	}
 
-	float visibleWidth;
-	float visibleHeight;
-	@Override
-	public void resize(int width, int height) {
-		
-		
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO how do I actually do this
-		//dispose();
-		//game.setScreen(new TitleScreen(game));
-	}
 
 	@Override
 	public void dispose() {
@@ -365,23 +326,9 @@ public class ScreenWorld extends DasuScreen {
 	}
 
 	public void moveCharacter(float x, float y) {
-		// TODO Auto-generated method stub
-		//Gdx.app.log("moveCharacter", ": "+ x + ", "+ y);
 		playerCharacter.setPosition(new Vector2(x,y));
 		
 	}
-	/*
-	public void upCharacter2(){
-		playerCharacter.setPosition2(null);
-	}
-
-	public void moveCharacter2(float x, float y) {
-		// TODO Auto-generated method stub
-		//Gdx.app.log("moveCharacter", ": "+ x + ", "+ y);
-		playerCharacter.setPosition2(new Vector2(x,y));
-		
-	}
-	*/
 
 	public void gameOver() {
 		gameState = GameState.LOSE;
@@ -389,12 +336,10 @@ public class ScreenWorld extends DasuScreen {
 	}
 	
 	private void setupEnemyLocations() {
-		//Gdx.app.log("load enemies", "blah");
 		enemies = new ArrayList<Enemy>();
 		for (int i = 0; i < 1 ; i ++){
 			enemies.add(new Enemy(new Vector2((float) (Math.random()-0.5)*visibleWidth,(float)(Math.random()-0.5)*visibleWidth),this));
 		}
-		//Gdx.app.log("load enemies", "blah"+ enemies.size());
 	}
 	
 	private float elapsedTime = 0;
@@ -404,17 +349,9 @@ public class ScreenWorld extends DasuScreen {
 
 		float minDistance = Float.MAX_VALUE;
 		
-		/*
-		if (Gdx.input.isTouched(0)){
-			Vector3 worldVec = getWorldCamera().screenToWorld(new Vector3(Gdx.input.getX(0),Gdx.input.getY(0),0));
-			moveCharacter2(worldVec.x,worldVec.y);
-		} else {
-			upCharacter2();
-		}
-		*/
-		if (playerCharacter.getPosition() != null) { // otherwise the max value
-														// is fine
-			// enough
+
+		if (playerCharacter.getPosition() != null) {
+			// otherwise the max value is fine
 			for (Enemy enemy : enemies) {
 				float enemyDistance = playerCharacter.getPosition().dst(
 						enemy.getPosition());
@@ -469,14 +406,13 @@ public class ScreenWorld extends DasuScreen {
 	}
 
 	private void unloadAssetsAndObjects() {
-		//Gdx.app.log("unload", "blah blah");
-		// enemies = null;
-		// TODO is this even neccesary?
+		// TODO get rid of this?
 		//Assets.clearAssets();
 	}
 	
 	public Color getCurrentColor(){
 		return currentBackgroundElement.getCurrentColor();
 	}
+
 
 }

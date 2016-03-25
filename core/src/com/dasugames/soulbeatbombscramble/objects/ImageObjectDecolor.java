@@ -5,20 +5,30 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.dasugames.soulbeatbombscramble.DasuScreen;
 
+/**
+ * Given the visual style of this game, I need to be able to add / remove
+ * color components to a given (black and white) image.
+ * @author darren.sue
+ *
+ */
 public class ImageObjectDecolor extends ImageObjectSimple {
+	private float elapsedTime = -1;
+	private float targetTime = -1;
+	private final Color WHITE_STABLE = new Color(1,1,1,1);
+	private Color targetColor = WHITE_STABLE;
+	private Color startColor = WHITE_STABLE;
+
+	
 
 	public ImageObjectDecolor(DasuScreen screenWorld, String asset,
 			Vector2 nPositionVec, float nParallaxScale, float nRotationScale,
 			Vector2 nResizeVec) {
 		super(screenWorld, asset, nPositionVec, nParallaxScale, nRotationScale,
 				nResizeVec);
-		sprite.setColor(new Color(1f,1f,1f,1f));
+		sprite.setColor(WHITE_STABLE);
 	}
 	
-	float elapsedTime = -1;
-	float targetTime = -1;
-	Color targetColor = new Color(1,1,1,1);
-	Color startColor = new Color(1,1,1,1);
+
 	public void setColorTarget(Color color, float timeLength){
 
 		this.targetTime = timeLength;
